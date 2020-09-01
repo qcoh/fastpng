@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef uint8_t u8;
 typedef uint32_t u32;
@@ -90,6 +91,30 @@ int main(int argc, char *argv[]) {
 	struct IHDR ihdr = parse_ihdr(first);
 
 	printf("width: %d, height: %d\n", ihdr.width, ihdr.height);
+
+	for (;;) {
+		struct chunk *chnk = parse_chunk(fp);
+		printf("lenght: %d\n", chnk->length);
+		printf(
+			"chunk_type: %c%c%c%c\n",
+			chnk->chunk_type[0],
+			chnk->chunk_type[1],
+			chnk->chunk_type[2],
+			chnk->chunk_type[3]
+		);
+
+		const bool iend 
+			=  chnk->chunk_type[0] == 'I'
+			&& chnk->chunk_type[1] == 'E'
+			&& chnk->chunk_type[2] == 'N'
+			&& chnk->chunk_type[3] == 'D';
+
+		free(chnk);
+
+		if (iend) {
+			break;
+		}
+	}
 
 	free(first);
 	fclose(fp);
