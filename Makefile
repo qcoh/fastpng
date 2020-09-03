@@ -1,8 +1,8 @@
-CFLAGS += -Wall -Wextra -pedantic -I include/ -MMD -MP 
+CFLAGS += -Wall -Wextra -pedantic -I include/ -MMD -MP
 LDLIBS +=
 
 all: src/fastpng
-src/fastpng: src/fastpng.o
+src/fastpng: src/fastpng.o src/chunk.o src/ihdr.o src/util.o
 
 .PHONY: clean
 
